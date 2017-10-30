@@ -1,0 +1,51 @@
+Publish               : No
+Protocol              : Local
+Store                 : ActiveStore
+AddressFamily         : IPv4
+ifIndex               : 6
+Caption               :
+Description           :
+ElementName           :
+InstanceID            : ;A<8<<8;:;8;=<9=<55@55:8:8:8:55;
+AdminDistance         :
+DestinationAddress    :
+IsStatic              :
+RouteMetric           : 256
+TypeOfRoute           : 3
+CompartmentId         : 1
+DestinationPrefix     : 172.22.101.132/32
+InterfaceAlias        : 以太网
+InterfaceIndex        : 6
+NextHop               : 0.0.0.0
+PreferredLifetime     : 10675199.02:48:05.4775807
+ValidLifetime         : 10675199.02:48:05.4775807
+PSComputerName        :
+CimClass              : ROOT/StandardCimv2:MSFT_NetRoute
+CimInstanceProperties : {Caption, Description, ElementName, InstanceID...}
+CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties
+
+Publish               : No
+Protocol              : Local
+Store                 : ActiveStore
+AddressFamily         : IPv4
+ifIndex               : 6
+Caption               :
+Description           :
+ElementName           :
+InstanceID            : ;A<8<<8;:;8:9<>55@55:8:8:8:55;
+AdminDistance         :
+DestinationAddress    :
+IsStatic              :
+RouteMetric           : 256
+TypeOfRoute           : 3
+CompartmentId         : 1
+DestinationPrefix     : 172.22.101.0/24
+InterfaceAlias        : 以太网
+InterfaceIndex        : 6
+NextHop               : 0.0.0.0
+PreferredLifetime     : 10675199.02:48:05.4775807
+ValidLifetime         : 10675199.02:48:05.4775807
+PSComputerName        :
+CimClass              : ROOT/StandardCimv2:MSFT_NetRoute
+CimInstanceProperties : {Caption, Description, ElementName, InstanceID...}
+CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties

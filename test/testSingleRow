@@ -1,0 +1,25 @@
+Publish               : No
+Protocol              : Local
+Store                 : ActiveStore
+AddressFamily         : IPv6
+ifIndex               : 1
+Caption               :
+Description           :
+ElementName           :
+InstanceID            : DD;9;<B55;55DD55;
+AdminDistance         :
+DestinationAddress    :
+IsStatic              :
+RouteMetric           : 256
+TypeOfRoute           : 3
+CompartmentId         : 1
+DestinationPrefix     : ::1/128
+InterfaceAlias        : Loopback Pseudo-Interface 1
+InterfaceIndex        : 1
+NextHop               : ::
+PreferredLifetime     : 10675199.02:48:05.4775807
+ValidLifetime         : 10675199.02:48:05.4775807
+PSComputerName        :
+CimClass              : ROOT/StandardCimv2:MSFT_NetRoute
+CimInstanceProperties : {Caption, Description, ElementName, InstanceID...}
+CimSystemProperties   : Microsoft.Management.Infrastructure.CimSystemProperties
