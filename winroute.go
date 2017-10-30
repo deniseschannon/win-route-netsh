@@ -43,13 +43,13 @@ func (r *router) GetRouteByDestination(dest string) (*RouteRow, error) {
 	return parseRouteRow([]byte(strings.Trim(stdout, "\n")))
 }
 func (r *router) AddRoute(row *RouteRow) error {
-	buff := bytes.NewBufferString(newRouteCMD)
+	buff := bytes.NewBuffer([]byte{})
 	newS, err := row.ToNewString()
 	if err != nil {
 		return err
 	}
 	buff.WriteString(newS)
-	stdout, err := r.runScript(buff.String())
+	stdout, err := r.runScript(fmt.Sprintf(newRouteCMD, buff.String()))
 	if err != nil {
 		return err
 	}
@@ -77,7 +77,6 @@ func (r *router) SetRoute(row *RouteRow) error {
 	}
 	buff.WriteString(fmt.Sprintf(" -DestinationPrefix %s", row.DestinationPrefix.String()))
 	buff.WriteString(setvalue)
-	println(buff.String())
 	stdout, err := r.runScript(buff.String())
 	if err != nil {
 		return err

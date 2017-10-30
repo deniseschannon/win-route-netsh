@@ -39,7 +39,7 @@ type RouteRow struct {
 	DestinationAddress string     `mapstructure:"DestinationAddress" powershell:",get;set;"`
 	IsStatic           string     `mapstructure:"IsStatic" powershell:",get;set;"`
 	RouteMetric        uint64     `mapstructure:"RouteMetric" powershell:",get;set;"`
-	TypeOfRoute        uint64     `mapstructure:"TypeOfRoute" powershell:",get;set;"`
+	TypeOfRoute        uint64     `mapstructure:"TypeOfRoute" powershell:""`
 	CompartmentId      uint64     `mapstructure:"CompartmentId" powershell:",get;"`
 	DestinationPrefix  *net.IPNet `mapstructure:"DestinationPrefix" powershell:",get;"`
 	InterfaceAlias     string     `mapstructure:"InterfaceAlias" powershell:",get;"`
@@ -60,7 +60,7 @@ func (row *RouteRow) ToNewString() (string, error) {
 		return "", fmt.Errorf(primaryKeyMissingErrorString, "DestinationPrefix")
 	}
 	buff.WriteString(fmt.Sprintf(" -DestinationPrefix %s", row.DestinationPrefix.String()))
-	if !row.NextHop.Equal(net.ParseIP("0.0.0.0")) && !row.NextHop.Equal(net.ParseIP("::")) {
+	if len(row.NextHop) != 0 {
 		buff.WriteString(fmt.Sprintf(" -NextHop %s", row.NextHop.String()))
 	}
 	if row.InterfaceIndex == 0 {
@@ -126,11 +126,15 @@ func parseRouteRow(input []byte) (*RouteRow, error) {
 }
 
 func map2Row(targetMap map[string]interface{}) (*RouteRow, error) {
+	if _, ok := targetMap["DestinationPrefix"]; !ok {
+		return nil, fmt.Errorf("Not a valid route row, entry is %v", targetMap)
+	}
 	rtn := RouteRow{}
 	config := &mapstructure.DecoderConfig{
 		DecodeHook: stringToIPDecodeHookFunc,
 		Metadata:   nil,
 		Result:     &rtn,
+		ZeroFields: false,
 	}
 	decoder, err := mapstructure.NewDecoder(config)
 	if err != nil {
@@ -164,7 +168,8 @@ func stringToIPDecodeHookFunc(f reflect.Type, t reflect.Type, data interface{}) 
 }
 
 func parseRows(input string) ([]*RouteRow, error) {
-	ss := strings.Split(input, "\n")
+	_input := strings.Replace(input, "\r", "", -1)
+	ss := strings.Split(_input, "\n")
 	var rows []*RouteRow
 	buff := bytes.NewBufferString("")
 	for _, s := range ss {
@@ -175,7 +180,7 @@ func parseRows(input string) ([]*RouteRow, error) {
 			}
 			rows = append(rows, row)
 			buff.Reset()
-		} else {
+		} else if len(s) != 0 {
 			buff.WriteString(s + "\n")
 		}
 	}
