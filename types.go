@@ -20,6 +20,7 @@ const (
 type IRouter interface {
 	GetRoutes() ([]*RouteRow, error)
 	GetRouteByDestination(string) (*RouteRow, error)
+	GetRoutesByInterfaceIndex(uint64) ([]*RouteRow, error)
 	AddRoute(*RouteRow) error
 	DeleteRouteByDest(string) error
 	SetRoute(*RouteRow) error

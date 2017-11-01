@@ -11,11 +11,12 @@ import (
 )
 
 const (
-	getAllRoutesCMD      = "get-netroute -erroraction Ignore | Format-List *"
-	getRouteCMDByDest    = "get-netroute %s -erroraction Ignore | Format-List *"
-	deleteRouteCMDByDest = "get-netroute %s | Remove-NetRoute -Confirm:$false"
-	setRouteCMDByDest    = "set-netroute"
-	newRouteCMD          = "new-netroute %s | Format-List *"
+	getAllRoutesCMD              = "get-netroute -erroraction Ignore | Format-List *"
+	getRouteCMDByDest            = "get-netroute %s -erroraction Ignore | Format-List *"
+	deleteRouteCMDByDest         = "get-netroute %s | Remove-NetRoute -Confirm:$false"
+	setRouteCMDByDest            = "set-netroute"
+	newRouteCMD                  = "new-netroute %s | Format-List *"
+	getRoutesCMDByInterfaceIndex = "get-netroute -InterfaceIndex %d | Format-List *"
 )
 
 type router struct {
@@ -93,4 +94,12 @@ func (r *router) runScript(cmdLine string) (string, error) {
 		return "", err
 	}
 	return stdout, nil
+}
+
+func (r *router) GetRoutesByInterfaceIndex(index uint64) ([]*RouteRow, error) {
+	stdout, err := r.runScript(fmt.Sprintf(getRoutesCMDByInterfaceIndex, index))
+	if err != nil {
+		return nil, err
+	}
+	return parseRows(stdout)
 }
