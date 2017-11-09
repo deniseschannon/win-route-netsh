@@ -52,7 +52,11 @@ type RouteRow struct {
 }
 
 func (row *RouteRow) Equal(target *RouteRow) bool {
-	return false
+	return row.DestinationPrefix.String() == target.DestinationPrefix.String() &&
+		row.NextHop.Equal(target.NextHop) &&
+		row.InterfaceIndex == target.InterfaceIndex &&
+		row.Store == target.Store &&
+		row.PSComputerName == target.PSComputerName
 }
 
 func (row *RouteRow) ToNewString() (string, error) {
