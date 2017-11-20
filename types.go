@@ -119,13 +119,23 @@ func (row *RouteRow) ToPowershellString() string {
 func parseRouteRow(input []byte) (*RouteRow, error) {
 	tmpMap := map[string]interface{}{}
 	scanner := bufio.NewScanner(bytes.NewReader(input))
+	lastKey := ""
+	seperatorIndex := bytes.IndexRune(input, ':')
 	for scanner.Scan() {
 		line := scanner.Text()
 		kvpair := strings.SplitN(line, ":", 2)
-		if len(kvpair) != 2 {
+		switch len(kvpair) {
+		case 1:
+			if lastKey == "" {
+				return nil, errors.New(line + " is not a valid output")
+			}
+			tmpMap[lastKey] = tmpMap[lastKey].(string) + line[seperatorIndex+2:len(line)]
+		case 2:
+			tmpMap[strings.TrimSpace(kvpair[0])] = strings.TrimSpace(kvpair[1])
+			lastKey = strings.TrimSpace(kvpair[0])
+		default:
 			return nil, errors.New(line + " is not a valid output")
 		}
-		tmpMap[strings.TrimSpace(kvpair[0])] = strings.TrimSpace(kvpair[1])
 	}
 	return map2Row(tmpMap)
 }
